@@ -16,11 +16,12 @@ async function Cadastrarlocalizacao() {
     let descricao = document.getElementById("descricao").value;
     let horario = document.getElementById("horario").value;
     let avaliacao = document.getElementById("avaliacao").value;
+    let endereco = document.getElementById("endereco").value;
     const tx = await db.transaction('localizacao', 'readwrite');
     const store = tx.objectStore('localizacao');
     try {
         
-        await store.add({latitude: latitude, horario: horario, descricao: descricao, avaliacao: avaliacao, longitude:longitude });
+        await store.add({endereco: endereco,latitude: latitude, horario: horario, descricao: descricao, avaliacao: avaliacao, longitude:longitude });
         await tx.done;
         limparCampos();
         alert('Anotação cadastrada com sucesso!')
@@ -69,7 +70,7 @@ async function listar(){
                      ${localizacao.horario} </p>
                     <p>${localizacao.descricao}</p>
                     <p>${localizacao.avaliacao}</p>
-                    
+                    <p>${localizacao.endereco}</p>
                    </div>`;
         });
         listagem(listar.join(' '));
