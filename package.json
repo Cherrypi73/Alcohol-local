@@ -1,19 +1,21 @@
 {
   "name": "alcohol-local",
-  "version": "1.0.0",
-  "description": "",
-  "main": "sw.js",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Cherrypi73/Alcohol-local.git"
-  },
-  "author": "maymari",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Cherrypi73/Alcohol-local/issues"
-  },
-  "homepage": "https://github.com/Cherrypi73/Alcohol-local#readme"
+  "devDependencies": {
+    "vite": "^4.4.5",
+    "idb": "7.1.1",
+    "workbox-cacheable-response": "7.0.0",
+    "workbox-expiration": "7.0.0",
+    "workbox-recipes": "7.0.0",
+    "workbox-routing": "7.0.0",
+    "workbox-strategies": "7.0.0",
+    "workbox-streams": "7.0.0"
+  }
 }
