@@ -6,6 +6,7 @@ window.addEventListener('DOMContentLoaded', async event =>{
     criarDB();
     document.getElementById('btnCadastro').addEventListener('click', Cadastrarlocalizacao);
     document.getElementById('btnCarregar').addEventListener('click', listar);
+    
     document.getElementById('btnDeletar').addEventListener('click', deletar);
  
 });
@@ -41,7 +42,7 @@ async function criarDB(){
                     case 0:
                     case 1:
                         const store = db.createObjectStore('localizacao', {
-                            keyPath: 'latitude'
+                            keyPath: 'descricao'
                         });
                         store.createIndex('id', 'id');
                         listagem("banco de dados criado!");
@@ -65,33 +66,41 @@ async function listar(){
     const lista = await store.getAll();
     if(lista){
         const listar = lista.map(localizacao => {
-            return `<div>
+            return `<div class="listando">
+                   
+                    <p>Nome: ${localizacao.descricao}</p>
+                    <p>Horario de funcionamento: ${localizacao.horario} </p>
+                    <p>Avaliação: ${localizacao.avaliacao}</p>
+                    <p>Endereço: ${localizacao.endereco}</p>
                     <p>Localização</p>
-                     ${localizacao.horario} </p>
-                    <p>${localizacao.descricao}</p>
-                    <p>${localizacao.avaliacao}</p>
-                    <p>${localizacao.endereco}</p>
+                    <iframe id="mapinha" src="http://maps.google.com/maps?q=${localizacao.latitude},${localizacao.longitude}&z=16&output=embed" frameborder="0" scrolling="no" style="width: 300px; height: 300px;"></iframe>
+                            <style>.mapouter{position:relative;height:300px;width:300px;background:#fff;} .maprouter a{color:#fff !important;position:absolute !important;top:0 !important;z-index:0 !important;}</style>
+                            <style>.gmap_canvas{overflow:hidden;height:300px;width:300px}.gmap_canvas iframe{position:relative;z-index:2}</style>
+                    
+
                    </div>`;
         });
         listagem(listar.join(' '));
     } 
 }
 
+
+
 async function deletar(){
-    let latitude = document.getElementById("latitude").value;
+    let descricao = document.getElementById("descricao").value;
     const tx = await db.transaction('localizacao', 'readwrite');
     const store = tx.objectStore('localizacao');
     
     try {
-        let lista = await store.get(latitude);
+        let lista = await store.get(descricao);
         if(lista){
-        await store.delete(latitude);
+        await store.delete(descricao);
         await tx.done;
         alert('Anotação removido com sucesso!')
         console.log('Anotação deletada com sucesso!');
         limparCampos()
     } else{
-            console.log('nnao encontrado')
+            console.log('nao encontrado')
             alert('Não foi encontrado no Banco de dados')
             limparCampos();
         } 
@@ -105,23 +114,26 @@ async function deletar(){
 
 function limparCampos() {
     document.getElementById("latitude").value = '';
+    document.getElementById("longitude").value = '';
+    document.getElementById("horario").value = '';
     document.getElementById("descricao").value = '';
-    document.getElementById("data").value = '';
+    document.getElementById("avaliacao").value = '';
+    document.getElementById("endereco").value = '';
 
 }
 
 
-let posicaoInicial;
-const capturarLocalizacao = document.getElementById('localizacao');
-const latitude = document.getElementById('latitude');
-const longitude = document.getElementById('longitude');
-const iframe = document.getElementById('mapa')
+
+const capturarLocalizacao =  document.getElementById('localizacao');
+
+
 
 //callback de sucesso para captura da posicao
 const sucesso = () => {
+  const iframe = document.getElementById('mapinha')
   let lat, lon;
-  lat =   document.getElementById('latitude').value;
-  lon =  document.getElementById('longitude').value;
+  lat =   latitude
+  lon =  longitude
 
   iframe.src = `http://maps.google.com/maps?q=${lat},${lon}&z=16&output=embed`
 };
@@ -147,7 +159,7 @@ const erro = (error) => {
 };
 
 capturarLocalizacao.addEventListener('click', () => {
-  navigator.geolocation.getCurrentPosition(sucesso, erro);
+  navigator.geolocation.watchPosition(sucesso, erro);
 });
 function listagem(text){
     document.getElementById('informacao').innerHTML = text;
