@@ -86,29 +86,6 @@ async function listar(){
 
 
 
-async function deletar(){
-    let descricao = document.getElementById("descricao").value;
-    const tx = await db.transaction('localizacao', 'readwrite');
-    const store = tx.objectStore('localizacao');
-    
-    try {
-        let lista = await store.get(descricao);
-        if(lista){
-        await store.delete(descricao);
-        await tx.done;
-        alert('Anotação removido com sucesso!')
-        console.log('Anotação deletada com sucesso!');
-        limparCampos()
-    } else{
-            console.log('nao encontrado')
-            alert('Não foi encontrado no Banco de dados')
-            limparCampos();
-        } 
-    } catch (error) {
-        console.error('Erro ao deletar:', error);
-        tx.abort();
-    }
-}
 
 
 
