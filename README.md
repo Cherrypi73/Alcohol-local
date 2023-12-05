@@ -1,2 +1,2 @@
 # Alcohol-local
-Trabalho das alunas Maylla ribeiro e Maria Luiza Passos, com o tema geolocalização de bares
+Trabalho das alunas Maylla Nascimento e Maria Luiza Passos, com o tema geolocalização de bares
